@@ -12,7 +12,7 @@ type Pixel struct {
 	A int
 }
 
-func getPixels(src image.Image) ([][]color.RGBA, error) {
+func GetPixels(src image.Image) ([][]color.RGBA, error) {
 
 	bounds := src.Bounds()
 	width, height := bounds.Max.X, bounds.Max.Y
@@ -31,4 +31,25 @@ func getPixels(src image.Image) ([][]color.RGBA, error) {
 
 func rgbaToPixel(r uint32, g uint32, b uint32, a uint32) color.RGBA {
 	return color.RGBA{R: uint8(r / 257), G: uint8(g / 257), B: uint8(b / 257), A: uint8(a / 257)}
+}
+
+func GetImage(pixels [][]color.RGBA) *image.RGBA {
+	rect := image.Rect(0, 0, len(pixels), len(pixels[0]))
+	nImg := image.NewRGBA(rect)
+	for x := 0; x < len(pixels); x++ {
+		for y := 0; y < len(pixels[0]); y++ {
+			q := pixels[x]
+			if q == nil {
+				continue
+			}
+			p := pixels[x][y]
+
+			original, ok := color.RGBAModel.Convert(p).(color.RGBA)
+			if ok {
+				nImg.Set(x, y, original)
+			}
+		}
+	}
+
+	return nImg
 }

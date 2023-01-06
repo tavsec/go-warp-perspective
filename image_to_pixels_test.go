@@ -25,9 +25,9 @@ func TestGetPixels(t *testing.T) {
 		}
 	}
 
-	pixels, err := getPixels(src)
+	pixels, err := GetPixels(src)
 	if err != nil {
-		t.Fatal("getPixels returned error: " + err.Error())
+		t.Fatal("GetPixels returned error: " + err.Error())
 	}
 
 	for x := 0; x < width; x++ {
